@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store - Michael Jackson</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-wrapper">
+            <a href="index.html" class="brand">ASTRIONX</a>
+            <button class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="store.html" class="active">Store</a></li>
+                <li><a href="collection.html">Collection</a></li>
+                <li><a href="exclusive.html">Exclusive</a></li>
+                <li><a href="legacy.html">Legacy</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="nav-btn search-btn">Search</button>
+                <button class="nav-btn cart-btn">Cart (<span class="cart-num">0</span>)</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="cart-sidebar">
+        <div class="cart-overlay"></div>
+        <div class="cart-panel">
+            <div class="cart-header">
+                <h2>Shopping Cart</h2>
+                <button class="cart-close">&times;</button>
+            </div>
+            <div class="cart-items" id="cart-items"></div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <span>Total:</span>
+                    <span class="cart-total-price">$0</span>
+                </div>
+                <button class="checkout-btn">Proceed to Checkout</button>
+                <button class="clear-cart-btn">Clear Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="checkout-modal" id="checkout-modal">
+        <div class="checkout-overlay"></div>
+        <div class="checkout-panel">
+            <button class="checkout-close">&times;</button>
+            <div class="checkout-header">
+                <h2>Checkout</h2>
+                <div class="checkout-steps">
+                    <div class="step active">1. Shipping</div>
+                    <div class="step">2. Payment</div>
+                    <div class="step">3. Review</div>
+                </div>
+            </div>
+            <div class="checkout-content">
+                <div class="checkout-step checkout-step-1 active">
+                    <h3>Shipping Information</h3>
+                    <form class="checkout-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>First Name *</label>
+                                <input type="text" id="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name *</label>
+                                <input type="text" id="lastName" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Email *</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number *</label>
+                            <input type="tel" id="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Address *</label>
+                            <input type="text" id="address" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>City *</label>
+                                <input type="text" id="city" required>
+                            </div>
+                            <div class="form-group">
+                                <label>State *</label>
+                                <input type="text" id="state" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>ZIP Code *</label>
+                                <input type="text" id="zip" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Country *</label>
+                                <input type="text" id="country" required>
+                            </div>
+                        </div>
+                    </form>
+                    <button class="checkout-next-btn" onclick="nextCheckoutStep(2)">Continue to Payment</button>
+                </div>
+                <div class="checkout-step checkout-step-2">
+                    <h3>Payment Information</h3>
+                    <form class="checkout-form">
+                        <div class="form-group">
+                            <label>Card Number *</label>
+                            <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Expiry Date *</label>
+                                <input type="text" id="expiry" placeholder="MM/YY" required>
+                            </div>
+                            <div class="form-group">
+                                <label>CVV *</label>
+                                <input type="text" id="cvv" placeholder="123" maxlength="3" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Cardholder Name *</label>
+                            <input type="text" id="cardName" required>
+                        </div>
+                    </form>
+                    <div class="checkout-actions">
+                        <button class="checkout-back-btn" onclick="nextCheckoutStep(1)">Back</button>
+                        <button class="checkout-next-btn" onclick="nextCheckoutStep(3)">Review Order</button>
+                    </div>
+                </div>
+                <div class="checkout-step checkout-step-3">
+                    <h3>Order Summary</h3>
+                    <div class="checkout-summary" id="checkout-summary"></div>
+                    <div class="checkout-total">
+                        <div class="checkout-total-row">
+                            <span>Subtotal:</span>
+                            <span id="checkout-subtotal">$0</span>
+                        </div>
+                        <div class="checkout-total-row">
+                            <span>Shipping:</span>
+                            <span>$15.00</span>
+                        </div>
+                        <div class="checkout-total-row">
+                            <span>Tax:</span>
+                            <span id="checkout-tax">$0</span>
+                        </div>
+                        <div class="checkout-total-row final">
+                            <span>Total:</span>
+                            <span id="checkout-final-total">$0</span>
+                        </div>
+                    </div>
+                    <div class="checkout-actions">
+                        <button class="checkout-back-btn" onclick="nextCheckoutStep(2)">Back</button>
+                        <button class="checkout-place-order-btn" onclick="placeOrder()">Place Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="page-hero">
+        <div class="page-hero-content">
+            <h1 class="page-hero-title">Full Store</h1>
+            <p class="page-hero-subtitle">Explore our complete collection of premium merchandise</p>
+        </div>
+    </section>
+
+    <section class="filter-section">
+        <div class="filter-wrapper">
+            <button class="filter-btn active" data-filter="all">All Products</button>
+            <button class="filter-btn" data-filter="Outerwear">Outerwear</button>
+            <button class="filter-btn" data-filter="Accessories">Accessories</button>
+            <button class="filter-btn" data-filter="Footwear">Footwear</button>
+            <button class="filter-btn" data-filter="Limited Edition">Limited Edition</button>
+            <button class="filter-btn" data-filter="Apparel">Apparel</button>
+        </div>
+    </section>
+
+    <section class="collection store-collection">
+        <div id="all-products" class="products"></div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-wrapper">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <div class="footer-logo">ASTRIONX</div>
+                    <p class="footer-tagline">The King of Pop</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Shop</h4>
+                        <ul>
+                            <li><a href="store.html">Store</a></li>
+                            <li><a href="collection.html">Collection</a></li>
+                            <li><a href="exclusive.html">Exclusive</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Support</h4>
+                        <ul>
+                            <li><a href="contact.html">Contact</a></li>
+                            <li><a href="#">Shipping</a></li>
+                            <li><a href="#">Returns</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Follow</h4>
+                        <ul>
+                            <li><a href="#">Instagram</a></li>
+                            <li><a href="#">Twitter</a></li>
+                            <li><a href="#">Facebook</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Michael Jackson Estate. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+        
+        window.productsData = [
+            {id:1,name:"Thriller Jacket",category:"Outerwear",price:399,images:["https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&h=800&fit=crop","https://images.unsplash.com/photo-1520975954732-35dd22299614?w=600&h=800&fit=crop"],description:"Iconic red leather jacket.",features:["100% Genuine Leather","Original Design"],reviews:[{name:"John D.",rating:5,comment:"Amazing!"}]},
+            {id:2,name:"Signature Fedora",category:"Accessories",price:199,images:["https://images.unsplash.com/photo-1514327605112-b887c0e61c0a?w=600&h=800&fit=crop"],description:"Classic fedora.",features:["Premium Felt"],reviews:[]},
+            {id:3,name:"Crystal Glove",category:"Accessories",price:299,images:["https://images.unsplash.com/photo-1607522370275-f14206abe5d3?w=600&h=800&fit=crop"],description:"Crystal glove.",features:["Hand crystals"],reviews:[]},
+            {id:4,name:"Smooth Criminal",category:"Outerwear",price:499,images:["https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=600&h=800&fit=crop"],description:"White suit.",features:["Tailored"],reviews:[]},
+            {id:5,name:"Bad Tour",category:"Limited Edition",price:599,images:["https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600&h=800&fit=crop"],description:"Limited.",features:["Rare"],reviews:[]},
+            {id:6,name:"Moonwalk Shoes",category:"Footwear",price:349,images:["https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&h=800&fit=crop"],description:"Loafers.",features:["Smooth Sole"],reviews:[]},
+            {id:7,name:"Beat It Jacket",category:"Outerwear",price:449,images:["https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&h=800&fit=crop"],description:"Red jacket.",features:["Leather"],reviews:[]},
+            {id:8,name:"Billie Jean Hat",category:"Accessories",price:229,images:["https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=600&h=800&fit=crop"],description:"Fedora.",features:["Black"],reviews:[]},
+            {id:9,name:"Military Jacket",category:"Outerwear",price:559,images:["https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&h=800&fit=crop"],description:"Military.",features:["Gold"],reviews:[]},
+            {id:10,name:"White Socks",category:"Accessories",price:79,images:["https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=600&h=800&fit=crop"],description:"Socks.",features:["Cotton"],reviews:[]},
+            {id:11,name:"Tour Tee",category:"Apparel",price:89,images:["https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=600&h=800&fit=crop"],description:"Tee.",features:["Cotton"],reviews:[]},
+            {id:12,name:"Armband",category:"Accessories",price:159,images:["https://images.unsplash.com/photo-1611652022419-a9419f74343a?w=600&h=800&fit=crop"],description:"Gold.",features:["Gold"],reviews:[]},
+            {id:13,name:"Black Jacket",category:"Outerwear",price:429,images:["https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&h=800&fit=crop"],description:"Black.",features:["Leather"],reviews:[]},
+            {id:14,name:"Sunglasses",category:"Accessories",price:189,images:["https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&h=800&fit=crop"],description:"Aviator.",features:["UV"],reviews:[]},
+            {id:15,name:"Glove Pair",category:"Accessories",price:349,images:["https://images.unsplash.com/photo-1607522370275-f14206abe5d3?w=600&h=800&fit=crop"],description:"Sequin.",features:["Pair"],reviews:[]},
+            {id:16,name:"Captain EO",category:"Limited Edition",price:799,images:["https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&h=800&fit=crop"],description:"Limited.",features:["Rare"],reviews:[]},
+            {id:17,name:"HIStory Jacket",category:"Outerwear",price:529,images:["https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=600&h=800&fit=crop"],description:"Tour.",features:["Replica"],reviews:[]},
+            {id:18,name:"Loafers",category:"Footwear",price:299,images:["https://images.unsplash.com/photo-1533867617858-e7b97e060509?w=600&h=800&fit=crop"],description:"Leather.",features:["Leather"],reviews:[]},
+            {id:19,name:"Red Pants",category:"Apparel",price:389,images:["https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&h=800&fit=crop"],description:"Leather.",features:["Stretch"],reviews:[]},
+            {id:20,name:"Trilby",category:"Accessories",price:179,images:["https://images.unsplash.com/photo-1514327605112-b887c0e61c0a?w=600&h=800&fit=crop"],description:"Hat.",features:["Wool"],reviews:[]},
+            {id:21,name:"Sequin Jacket",category:"Outerwear",price:649,images:["https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&h=800&fit=crop"],description:"Sequin.",features:["Stage"],reviews:[]},
+            {id:22,name:"Black Fedora",category:"Accessories",price:209,images:["https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=600&h=800&fit=crop"],description:"Premium.",features:["Beaver"],reviews:[]},
+            {id:23,name:"Victory Shirt",category:"Apparel",price:99,images:["https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=600&h=800&fit=crop"],description:"Victory.",features:["Vintage"],reviews:[]},
+            {id:24,name:"Belt",category:"Accessories",price:129,images:["https://images.unsplash.com/photo-1611652022419-a9419f74343a?w=600&h=800&fit=crop"],description:"Gold buckle.",features:["Leather"],reviews:[]},
+            {id:25,name:"Varsity",category:"Outerwear",price:379,images:["https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&h=800&fit=crop"],description:"Varsity.",features:["Wool"],reviews:[]},
+            {id:26,name:"White Glove",category:"Accessories",price:149,images:["https://images.unsplash.com/photo-1607522370275-f14206abe5d3?w=600&h=800&fit=crop"],description:"Single.",features:["Cotton"],reviews:[]},
+            {id:27,name:"Stage Boots",category:"Footwear",price:399,images:["https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&h=800&fit=crop"],description:"Performance.",features:["Anti-slip"],reviews:[]},
+            {id:28,name:"Gold Glasses",category:"Accessories",price:249,images:["https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&h=800&fit=crop"],description:"Gold.",features:["Mirror"],reviews:[]},
+            {id:29,name:"Embroidered",category:"Outerwear",price:589,images:["https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&h=800&fit=crop"],description:"Hand.",features:["Silk"],reviews:[]},
+            {id:30,name:"Poster Tee",category:"Apparel",price:79,images:["https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=600&h=800&fit=crop"],description:"Album.",features:["Print"],reviews:[]},
+            {id:31,name:"Chain",category:"Accessories",price:199,images:["https://images.unsplash.com/photo-1611652022419-a9419f74343a?w=600&h=800&fit=crop"],description:"Gold chain.",features:["18K"],reviews:[]},
+            {id:32,name:"Wembley",category:"Limited Edition",price:899,images:["https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&h=800&fit=crop"],description:"Concert.",features:["Limited"],reviews:[]},
+            {id:33,name:"Dance Sneakers",category:"Footwear",price:279,images:["https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&h=800&fit=crop"],description:"Pro.",features:["Spin"],reviews:[]},
+            {id:34,name:"Off Wall Tee",category:"Apparel",price:89,images:["https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=600&h=800&fit=crop"],description:"Album.",features:["Vintage"],reviews:[]},
+            {id:35,name:"Wristband",category:"Accessories",price:69,images:["https://images.unsplash.com/photo-1611652022419-a9419f74343a?w=600&h=800&fit=crop"],description:"Leather.",features:["Snap"],reviews:[]},
+            {id:36,name:"Tour Cap",category:"Accessories",price:119,images:["https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=600&h=800&fit=crop"],description:"Cap.",features:["Logo"],reviews:[]}
+        ];
+        
+        let currentPage = 1;
+        const productsPerPage = 12;
+        let currentFilter = 'all';
+        
+        class ShoppingCart {
+            constructor() {
+                this.items = JSON.parse(localStorage.getItem('mjCart')) || [];
+                this.updateCartUI();
+            }
+            addItem(productId) {
+                const product = window.productsData.find(p => p.id === productId);
+                if (!product) return;
+                const existingItem = this.items.find(item => item.id === productId);
+                if (existingItem) existingItem.quantity += 1;
+                else this.items.push({ id:product.id, name:product.name, category:product.category, price:product.price, image:product.images[0], quantity: 1 });
+                this.saveCart();
+                this.updateCartUI();
+                this.showNotification('Added to cart!');
+            }
+            removeItem(productId) {
+                this.items = this.items.filter(item => item.id !== productId);
+                this.saveCart();
+                this.updateCartUI();
+            }
+            clearCart() {
+                if (this.items.length === 0) return;
+                if (confirm('Clear cart?')) { this.items = []; this.saveCart(); this.updateCartUI(); }
+            }
+            getTotal() { return this.items.reduce((total, item) => total + (item.price * item.quantity), 0); }
+            getItemCount() { return this.items.reduce((count, item) => count + item.quantity, 0); }
+            saveCart() { localStorage.setItem('mjCart', JSON.stringify(this.items)); }
+            updateCartUI() {
+                const cartNum = document.querySelector('.cart-num');
+                if (cartNum) cartNum.textContent = this.getItemCount();
+                this.renderCartItems();
+            }
+            renderCartItems() {
+                const container = document.getElementById('cart-items');
+                if (!container) return;
+                if (this.items.length === 0) {
+                    container.innerHTML = '<div class="cart-empty"><div class="cart-empty-icon">🛒</div><h3>Your cart is empty</h3><p>Add products</p></div>';
+                    document.querySelector('.cart-total-price').textContent = '$0';
+                    return;
+                }
+                container.innerHTML = this.items.map(item => `<div class="cart-item"><img src="${item.image}" alt="${item.name}" class="cart-item-image"><div class="cart-item-details"><div class="cart-item-name">${item.name}</div><div class="cart-item-category">${item.category}</div><div class="cart-item-price">$${item.price} ${item.quantity > 1 ? `x ${item.quantity}` : ''}</div></div><button class="cart-item-remove" onclick="cart.removeItem(${item.id})">Remove</button></div>`).join('');
+                document.querySelector('.cart-total-price').textContent = `$${this.getTotal()}`;
+            }
+            toggleCart() {
+                const sidebar = document.querySelector('.cart-sidebar');
+                sidebar.classList.toggle('active');
+                document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+            }
+            showNotification(message) {
+                const existingNotif = document.querySelector('.cart-notification');
+                if (existingNotif) existingNotif.remove();
+                const notif = document.createElement('div');
+                notif.className = 'cart-notification';
+                notif.textContent = message;
+                notif.style.cssText = 'position:fixed;top:100px;right:30px;background:#d4af37;color:#000;padding:20px 40px;font-size:13px;font-weight:600;letter-spacing:2px;z-index:100000;opacity:0;';
+                document.body.appendChild(notif);
+                gsap.to(notif, {opacity:1, duration:0.4});
+                setTimeout(() => { gsap.to(notif, {opacity:0, duration:0.4, onComplete:()=>notif.remove()}); }, 2000);
+            }
+        }
+        
+        const cart = new ShoppingCart();
+        window.addToCart = (id) => cart.addItem(id);
+        
+        let currentCheckoutStep = 1;
+        function openCheckoutModal() {
+            if (cart.items.length === 0) { alert('Cart empty!'); return; }
+            const modal = document.getElementById('checkout-modal');
+            modal.style.display = 'flex';
+            gsap.to(modal, {opacity: 1, duration: 0.4});
+            document.body.style.overflow = 'hidden';
+            currentCheckoutStep = 1;
+            updateCheckoutStep(1);
+            updateCheckoutSummary();
+        }
+        function closeCheckoutModal() {
+            const modal = document.getElementById('checkout-modal');
+            gsap.to(modal, { opacity: 0, duration: 0.4, onComplete: () => { modal.style.display = 'none'; document.body.style.overflow = ''; }});
+        }
+        function nextCheckoutStep(step) { currentCheckoutStep = step; updateCheckoutStep(step); }
+        function updateCheckoutStep(step) {
+            document.querySelectorAll('.checkout-step').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.querySelector('.checkout-step-' + step).classList.add('active');
+            document.querySelectorAll('.step')[step - 1].classList.add('active');
+            if (step === 3) updateCheckoutSummary();
+        }
+        function updateCheckoutSummary() {
+            const container = document.getElementById('checkout-summary');
+            const subtotal = cart.getTotal();
+            const tax = (subtotal * 0.1).toFixed(2);
+            const shipping = 15;
+            const total = (parseFloat(subtotal) + parseFloat(tax) + shipping).toFixed(2);
+            container.innerHTML = cart.items.map(item => `<div class="checkout-summary-item"><img src="${item.image}" class="checkout-summary-img"><div class="checkout-summary-details"><div class="checkout-summary-name">${item.name}</div><div class="checkout-summary-cat">${item.category}</div></div><div class="checkout-summary-price">$${item.price} x ${item.quantity}</div></div>`).join('');
+            document.getElementById('checkout-subtotal').textContent = '$' + subtotal;
+            document.getElementById('checkout-tax').textContent = '$' + tax;
+            document.getElementById('checkout-final-total').textContent = '$' + total;
+        }
+        function placeOrder() { alert('Order placed!'); cart.items = []; cart.saveCart(); cart.updateCartUI(); closeCheckoutModal(); }
+        
+        function openProductModal(productId) {
+            const product = window.productsData.find(p => p.id === productId);
+            if (!product) return;
+            const modal = document.createElement('div');
+            modal.className = 'product-modal';
+            modal.innerHTML = `<div class="product-modal-overlay"></div><div class="product-modal-panel"><button class="product-modal-close">&times;</button><div class="product-modal-content"><div class="product-modal-gallery"><div class="product-modal-main-img"><img src="${product.images[0]}" id="main-product-img"></div><div class="product-modal-thumbs">${product.images.map((img,i)=>`<img src="${img}" onclick="changeMainImage('${img}')" class="${i===0?'active':''}">`).join('')}</div></div><div class="product-modal-details"><div class="product-modal-cat">${product.category}</div><h2 class="product-modal-name">${product.name}</h2><div class="product-modal-price">$${product.price}</div><div class="product-modal-rating"><span class="stars">${'★'.repeat(5)}</span> <span>(${product.reviews.length})</span></div><p class="product-modal-desc">${product.description}</p><div class="product-modal-features"><h4>Features:</h4><ul>${product.features.map(f=>`<li>${f}</li>`).join('')}</ul></div><button class="product-modal-add-btn" onclick="addToCart(${product.id}); closeProductModal();">Add to Cart - $${product.price}</button><div class="product-modal-reviews"><h4>Reviews</h4>${product.reviews.length ? product.reviews.map(r=>`<div class="review"><div class="review-header"><strong>${r.name}</strong><span class="review-stars">${'★'.repeat(r.rating)}</span></div><p>${r.comment}</p></div>`).join('') : '<p>No reviews.</p>'}</div></div></div></div>`;
+            document.body.appendChild(modal);
+            setTimeout(()=>{ modal.style.opacity = 1; document.body.style.overflow = 'hidden'; },10);
+            modal.querySelector('.product-modal-overlay').onclick = closeProductModal;
+            modal.querySelector('.product-modal-close').onclick = closeProductModal;
+        }
+        function closeProductModal() {
+            const modal = document.querySelector('.product-modal');
+            if (modal) { modal.style.opacity = 0; setTimeout(()=>{ modal.remove(); document.body.style.overflow = ''; },300); }
+        }
+        function changeMainImage(imgSrc) {
+            document.getElementById('main-product-img').src = imgSrc;
+            document.querySelectorAll('.product-modal-thumbs img').forEach(img=>img.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+        
+        function renderProducts(products) {
+            const container = document.getElementById('all-products');
+            if (!container) return;
+            const totalPages = Math.ceil(products.length / productsPerPage);
+            const startIndex = (currentPage - 1) * productsPerPage;
+            const endIndex = startIndex + productsPerPage;
+            const currentProducts = products.slice(startIndex, endIndex);
+            if (currentProducts.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>No Products</h3><p>Try another filter</p></div>';
+                return;
+            }
+            container.innerHTML = currentProducts.map(p => `<div class="product" onclick="openProductModal(${p.id})"><div class="product-img"><img src="${p.images[0]}" alt="${p.name}" class="product-image"><button class="product-quick" onclick="event.stopPropagation(); addToCart(${p.id})">Add to Cart</button></div><div class="product-info"><div class="product-cat">${p.category}</div><h3 class="product-name">${p.name}</h3><div class="product-price">$${p.price}</div></div></div>`).join('');
+            renderPagination(totalPages);
+            setTimeout(() => { gsap.from('.product', {opacity:0, y:50, stagger:0.1, duration:0.6}); }, 100);
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+        
+        function renderPagination(totalPages) {
+            let paginationHTML = '<div class="pagination">';
+            if (currentPage > 1) paginationHTML += `<button class="pagination-btn" onclick="changePage(${currentPage - 1})">← Prev</button>`;
+            for (let i = 1; i <= totalPages; i++) {
+                paginationHTML += `<button class="pagination-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+            }
+            if (currentPage < totalPages) paginationHTML += `<button class="pagination-btn" onclick="changePage(${currentPage + 1})">Next →</button>`;
+            paginationHTML += '</div>';
+            const container = document.getElementById('all-products');
+            container.insertAdjacentHTML('afterend', paginationHTML);
+            const oldPagination = document.querySelectorAll('.pagination');
+            if (oldPagination.length > 1) oldPagination[0].remove();
+        }
+        
+        function changePage(page) {
+            currentPage = page;
+            const filtered = currentFilter === 'all' ? window.productsData : window.productsData.filter(p=>p.category===currentFilter);
+            renderProducts(filtered);
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts(window.productsData);
+            document.querySelector('.cart-btn').addEventListener('click', ()=>cart.toggleCart());
+            document.querySelector('.cart-close').addEventListener('click', ()=>cart.toggleCart());
+            document.querySelector('.cart-overlay').addEventListener('click', ()=>cart.toggleCart());
+            document.querySelector('.clear-cart-btn').addEventListener('click', ()=>cart.clearCart());
+            document.querySelector('.checkout-btn').addEventListener('click', ()=>openCheckoutModal());
+            const checkoutClose = document.querySelector('.checkout-close');
+            if (checkoutClose) checkoutClose.addEventListener('click', ()=>closeCheckoutModal());
+            const checkoutOverlay = document.querySelectorAll('.checkout-overlay')[0];
+            if (checkoutOverlay) checkoutOverlay.addEventListener('click', ()=>closeCheckoutModal());
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    currentPage = 1;
+                    const filtered = currentFilter === 'all' ? window.productsData : window.productsData.filter(p=>p.category===currentFilter);
+                    renderProducts(filtered);
+                });
+            });
+            
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('nav-menu');
+            if (hamburger) {
+                hamburger.addEventListener('click', () => {
+                    hamburger.classList.toggle('active');
+                    navMenu.classList.toggle('active');
+                    document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
+                });
+            }
+            document.querySelectorAll('.nav-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 767) {
+                        hamburger.classList.remove('active');
+                        navMenu.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+            
+            gsap.from('.page-hero-title', {opacity:0, y:50, duration:1, delay:0.2});
+            gsap.from('.page-hero-subtitle', {opacity:0, y:30, duration:1, delay:0.4});
+        });
+    </script>
+</body>
+</html>
